@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css" 
+    rel="stylesheet" integrity="sha384-Zenh87qX5JnK2Jl0vWa8Ck2rdkQ2Bzep5IDxbcnCeuOxjzrPF/et3URy9Bv1WTRi" 
+    crossorigin="anonymous">
+    <title>Edit</title>
+</head>
+<body>
+    <div class="container mx-auto m-3" style="width:1000px">
+        <div class="p-2 mr-1 text-end">
+            <a href="/new" class="m-2 text-nowrap">Add a Magazine</a>
+            <a href="/success" class="m-2 text-nowrap">Dashboard</a>
+            <a href="/logout" class="btn btn-primary btn-sm m-2" >Logout</a>
+        </div> 
+        <div class="card m-2 p-4 d-flex">
+            <div class="row">
+                <div class="col">
+                    <h2>Update User</h2>
+                    {% with messages = get_flashed_messages(category_filter=['update']) %}
+                        {% if messages %}
+                            {% for message in messages %}
+                                <p class="alert alert-danger p-2" role="alert">{{message}}</p>
+                            {% endfor %}
+                        {% endif %}
+                    {% endwith %}
+                    <form method="post" action="/user/account/update">
+                        <div class="form-group">
+                            <input type="hidden" name="id" value="{{ user.id }}">
+                            {% for user in users %}
+                                <option value="{{ user.id }}">{{ user.id }}</option>
+                            {% endfor %}
+                            <label class="form-check-label" for="first_name">First Name:</label><br>
+                            <input class="m-2" type="text" value="{{user.first_name}}" id="first_name" name="first_name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="last_name">Last Name:</label><br>
+                            <input class="m-2" type="text" id="last_name" value="{{user.last_name}}" name="last_name">
+                        </div>
+                        <div class="form-group">
+                            <label class="form-check-label" for="email">Email:</label><br>
+                            <input class="m-2" type="text" id="email" value="{{user.email}}" name="email">
+                        </div>
+                        <input type="submit" value="Update" class="btn m-3 btn-primary">
+                    </form>
+                </div>
+                <div class="col">
+                    <h2>User's Magazines</h2>
+                    <div class="card m-3">
+                    {% for magazine in user.magazines %}
+                        <div class="p-2">
+                            <p class="font-weight-boldp-2">{{ magazine.title }}
+                                <a href="/destroy/{{magazine.id}}">Delete</a></p>
+                        </div>
+                    {% endfor %}   
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
